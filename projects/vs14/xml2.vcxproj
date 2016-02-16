@@ -185,7 +185,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
@@ -196,11 +197,45 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libiconvd.lib;liblzmad.lib;libzlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -209,7 +244,8 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
       <BrowseInformation>true</BrowseInformation>
@@ -218,11 +254,45 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libiconvd.lib;liblzmad.lib;libzlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -232,22 +302,67 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_WIN32_WINNT=0x0502;_LIB;LIBXML_STATIC;LZMA_API_STATIC;_WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
       <BrowseInformation>true</BrowseInformation>
+      <StringPooling>true</StringPooling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <ExceptionHandling>false</ExceptionHandling>
+      <InterproceduralOptimization>SingleFile</InterproceduralOptimization>
     </ClCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libiconv.lib;liblzma.lib;libzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -257,21 +372,66 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;LIBXML_STATIC;LZMA_API_STATIC;_WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
       <BrowseInformation>true</BrowseInformation>
+      <InterproceduralOptimization>SingleFile</InterproceduralOptimization>
+      <ExceptionHandling>false</ExceptionHandling>
+      <StringPooling>true</StringPooling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libiconv.lib;liblzma.lib;libzlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
     <ClCompile>
@@ -279,11 +439,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;WIN32;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_DEBUG;_WINDOWS;_USRDLL;WIN32;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
       <BrowseInformation>true</BrowseInformation>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -293,12 +455,46 @@
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>iconvd.lib;lzmad.lib;zlibd.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
     <ClCompile>
@@ -306,11 +502,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;WIN32;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_DEBUG;_WINDOWS;_USRDLL;WIN32;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
       <BrowseInformation>true</BrowseInformation>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -320,11 +518,45 @@
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>iconvd.lib;lzmad.lib;zlibd.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
     <ClCompile>
@@ -334,11 +566,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
       <BrowseInformation>true</BrowseInformation>
+      <StringPooling>true</StringPooling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -348,7 +590,7 @@
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>iconv.lib;lzma.lib;zlib.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LargeAddressAware>true</LargeAddressAware>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -356,6 +598,40 @@
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
     <ClCompile>
@@ -365,11 +641,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\include;$(OutDir)..\..\include\iconv;$(OutDir)..\..\include\zlib;$(OutDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4800;4244;4018;4146;4267;4101;4005;4477;4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;NDEBUG;_WINDOWS;_USRDLL;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
       <BrowseInformation>true</BrowseInformation>
+      <StringPooling>true</StringPooling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -379,14 +665,102 @@
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>iconv.lib;lzma.lib;zlib.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <PreBuildEvent>
+      <Command>
+IF EXIST "$(ProjectDir)..\..\config.h" (
+  DEL "$(ProjectDir)..\..\config.h"
+)
+
+IF EXIST "$(OutDir)..\..\licenses\$(ProjectName).txt" (
+  DEL "$(OutDir)..\..\licenses\$(ProjectName).txt"
+)
+
+IF EXIST "$(OutDir)..\..\include\$(ProjectName)" (
+  RD /s /q "$(OutDir)..\..\include\$(ProjectName)"
+)
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+ECHO Off
+SETLOCAL EnableDelayedExpansion EnableExtensions
+
+MKDIR "$(OutDir)..\..\include"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)"
+MKDIR "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+COPY "$(ProjectDir)config.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)..\..\include\libxml\*.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+COPY "$(ProjectDir)libxml\xmlversion.h" "$(OutDir)..\..\include\$(ProjectName)\libxml"
+
+MKDIR "$(OutDir)..\..\licenses"
+COPY "$(ProjectDir)..\..\Copyright" "$(OutDir)..\..\licenses\$(ProjectName).txt" 
+
+ENDLOCAL
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\buf.c" />
+    <ClCompile Include="..\..\c14n.c" />
+    <ClCompile Include="..\..\catalog.c" />
+    <ClCompile Include="..\..\chvalid.c" />
+    <ClCompile Include="..\..\debugXML.c" />
+    <ClCompile Include="..\..\dict.c" />
+    <ClCompile Include="..\..\DOCBparser.c" />
+    <ClCompile Include="..\..\encoding.c" />
+    <ClCompile Include="..\..\entities.c" />
+    <ClCompile Include="..\..\error.c" />
+    <ClCompile Include="..\..\globals.c" />
+    <ClCompile Include="..\..\hash.c" />
+    <ClCompile Include="..\..\HTMLparser.c" />
+    <ClCompile Include="..\..\HTMLtree.c" />
+    <ClCompile Include="..\..\legacy.c" />
+    <ClCompile Include="..\..\list.c" />
+    <ClCompile Include="..\..\nanoftp.c" />
+    <ClCompile Include="..\..\nanohttp.c" />
+    <ClCompile Include="..\..\parser.c" />
+    <ClCompile Include="..\..\parserInternals.c" />
+    <ClCompile Include="..\..\pattern.c" />
+    <ClCompile Include="..\..\relaxng.c" />
+    <ClCompile Include="..\..\SAX.c" />
+    <ClCompile Include="..\..\SAX2.c" />
+    <ClCompile Include="..\..\schematron.c" />
+    <ClCompile Include="..\..\threads.c" />
+    <ClCompile Include="..\..\tree.c" />
+    <ClCompile Include="..\..\uri.c" />
+    <ClCompile Include="..\..\valid.c" />
+    <ClCompile Include="..\..\xinclude.c" />
+    <ClCompile Include="..\..\xlink.c" />
+    <ClCompile Include="..\..\xmlcatalog.c" />
+    <ClCompile Include="..\..\xmlIO.c" />
+    <ClCompile Include="..\..\xmlmemory.c" />
+    <ClCompile Include="..\..\xmlmodule.c" />
+    <ClCompile Include="..\..\xmlreader.c" />
+    <ClCompile Include="..\..\xmlregexp.c" />
+    <ClCompile Include="..\..\xmlsave.c" />
+    <ClCompile Include="..\..\xmlschemas.c" />
+    <ClCompile Include="..\..\xmlschemastypes.c" />
+    <ClCompile Include="..\..\xmlstring.c" />
+    <ClCompile Include="..\..\xmlunicode.c" />
+    <ClCompile Include="..\..\xmlwriter.c" />
+    <ClCompile Include="..\..\xpath.c" />
+    <ClCompile Include="..\..\xpointer.c" />
+    <ClCompile Include="..\..\xzlib.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\elfgcchack.h" />
+    <ClInclude Include="..\..\libxml.h" />
+    <ClInclude Include="libxml\xmlversion.h" />
+    <ClInclude Include="config.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
